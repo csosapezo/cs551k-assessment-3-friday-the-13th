@@ -10,17 +10,8 @@ random_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.25 & .nth(0,DirList,D
 +!start : true <- 
 	.print("hello massim world.").
 
-+step(X) : thing(0, 1, dispenser, _) <-
-    request(s).
-
-+step(X) : thing(0, -1, dispenser, _) <-
-    request(n).
-
-+step(X) : thing(1, 0, dispenser, _) <-
-    request(e).
-
-+step(X) : thing(-1, 0, dispenser, _) <-
-    request(w).
++step(X) : true <-
+	.print("Received step percept.").
 	
 +actionID(X) : true <- 
 	.print("Determining my action");
