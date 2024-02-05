@@ -37,7 +37,7 @@ lateral([w, e], Dir) :- Dir = n | Dir = s.
 & lateral(New, Dir) & .random(RandomNumber) & random_dir_2(New,RandomNumber,NewDir) <-
 	.print("now explore ", NewDir);
 	move(NewDir).
-^
+
 +step(X): mode(explore) & .random(RandomNumber) & random_dir([n,s,e,w],RandomNumber,Dir) <-
     !add;
     .print("start exploring ", Dir);
