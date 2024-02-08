@@ -25,15 +25,13 @@ ava_dir(n).
 
 /* Plans */
 
-+!start : .random(R1) & get_random_pointX(R1,X) & .random(R2) & get_random_pointX(R2,Y)<- 
++!start : true<- 
 	.my_name(N);
 	+agent_name(N);
 	.all_names(L);
 	+agent_list(L);
 	.time(H,M,S,MS); 	.print("[",H,":",M,":",S,":",MS,"] ","agent name is ",N);
-	.print("[",H,":",M,":",S,":",MS,"] ","hello massim world.");
-	+random_point(X,Y);
-	.
+	.print("[",H,":",M,":",S,":",MS,"] ","hello massim world.").
 	
 +step(S): task_base(N, S, R,TX,TY,B) <-
 	-task_base(N, S, R,TX,TY,B);
@@ -51,8 +49,7 @@ ava_dir(n).
 	.
 
 +!action_pipe : agent_mode(exploration)<- 
-	!explore;
-	.
+	!explore.
 
 // the agent fetches a block
 +!action_pipe : stock(Btype,X,Y) &  agent_mode(find_blocks) <-
@@ -65,9 +62,7 @@ ava_dir(n).
 
 
 +!explore: true <-
-	!move_random_point;
-	//!move_random;
-	.
+	!move_agent.
 
 
 @discover_stock[atomic] 

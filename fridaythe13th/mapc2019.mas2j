@@ -13,6 +13,6 @@ MAS macp2019 {
 	environment: jason.eis.EISAdapter
 
     agents:
-		connectionA #5;
+		connectionA  single.asl #4;
+        connectionA5 single.asl;
 }
-

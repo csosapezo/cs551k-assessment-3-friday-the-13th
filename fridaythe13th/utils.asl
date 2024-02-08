@@ -12,6 +12,10 @@ get_dir_on(1,0,Dir) :- Dir = w.
 get_dir_on(-1,0,Dir) :- Dir = e.
 get_dir_on(X,Y,null) :- (X > 1 | X < -1) & (Y > 1 | Y < -1).
 
+lateral([n, s], Dir) :- Dir = w | Dir = e.
+lateral([w, e], Dir) :- Dir = n | Dir = s.
+random_lateral_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.5 & .nth(0,DirList,Dir)) | (.nth(1,DirList,Dir)).
+
 
 //-----------------------------------------------
 

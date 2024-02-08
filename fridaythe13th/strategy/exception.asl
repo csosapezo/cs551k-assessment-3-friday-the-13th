@@ -1,4 +1,4 @@
-+!move_failed_path(Params): agent_mode(exploration) & agent_location(MyN,MyX,MyY) & .random(R1) & .random(R2) & .random(R3) & get_random_pointX(R1,X1) & get_random_pointY(R2,R3,X1,X,Y) <-
++!move_failed_path(Params): agent_mode(exploration) & agent_location(MyN,MyX,MyY) <-
 	.member(V,Params);
 	.time(H,M,S,MS); 	.print("[",H,":",M,":",S,":",MS,"] ","------------lastaction failed:",V);
 	if(V == n){
@@ -10,7 +10,6 @@
 	}elif(V == w){
 		-+agent_location(MyN,MyX+1,MyY);
 	};
-	-+random_point(X+MyX,Y+MyY);
 	.
 +!move_failed_path(Params) : agent_mode(find_blocks) & agent_location(MyN,MyX,MyY) & location(diispenser,Dtype,X,Y,DSeq) & stock(_,X2,Y2) & not X == X2 & not Y == Y2<-
 	.member(V,Params);
@@ -61,8 +60,8 @@
 		+boundary(s,MyX);
 		-+agent_location(MyN,MyX+1,MyY);
 	};
-	-+random_point(X+MyX,Y+MyY);
 	.
+	
 +!submit_success(Params): true <-
 	.member(N,Params);
 	.time(H,M,S,MS); 	.print("[",H,":",M,":",S,":",MS,"] ","agent submit task success--------------------N=",N);
