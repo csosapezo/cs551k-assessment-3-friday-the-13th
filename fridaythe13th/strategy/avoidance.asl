@@ -1,73 +1,54 @@
-// agent see a obstacle
-// +obstacle(X,Y): agent_location(MyN,MyX,MyY) & count_location(obstacle,N) & (N == 0) <- //信念里没有任何障碍
-// 	+location(obstacle,_,(MyX+X),(MyY+Y));
-// 	.time(H,M,S,MS); 	.print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :",(MyX+X),",",(MyY+Y));
-//     .
 
+/* This module is mainly used to manage the agent's obstacle avoidance strategy */
 
-// +obstacle(X,Y): agent_location(MyN,MyX,MyY) & location(obstacle,_,ObsX,ObsY) <- //信念里有这个障碍
-// 	if(not (ObsX == (MyX+X)) & not (ObsY == (MyY+Y))){
-// 		+location(obstacle,_,(MyX+X),(MyY+Y));
-// 		.time(H,M,S,MS); 	.print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :");
-// 	};
-// 	.
-// & not block(_, _)  & agent_mode(exploration)
+// 【obstacle】 In this case, if the agent does not have any information about the obstacle in its belief base, then the information about the obstacle is added 
+//              to the belief base and the obstacle avoidance action is performed.
++obstacle(X,Y): self_location(X0,Y0) & count_location(obstacle,N) & (N == 0) <- 
+    +location(obstacle,_,(X0+X),(Y0+Y));
+    .time(H,M,S,MS);
+    +avoid_obstacle(X0+X, Y0+Y);
+	.print("[",H,":",M,":",S,":",MS,"] ","Obstacle found at ",(X0+X),",",(Y0+Y)).
 
-
-+avoid_obstacle : agent_location(MyN, MyX, MyY)<-
-    if(location(obstacle,_,(MyX+1),(MyY))){
+// 【avoid_obstacle】 In this example, we use a random-vertical obstacle avoidance strategy. That is, if an obstacle obstructs the agent's direction of travel, then
+//                    a direction perpendicular to the direction of travel will be randomly selected for obstacle avoidance.
++avoid_obstacle : self_location(X0, Y0)<-
+    if(location(obstacle,_,(X0+1),(Y0))){
 		+avoid_obstacle_e_w;
-	}elif(location(obstacle,_,(MyX-1),(MyY))){
+	}elif(location(obstacle,_,(X0-1),(Y0))){
 		+avoid_obstacle_e_w;
-	}elif(location(obstacle,_,(MyX),(MyY+1))){
+	}elif(location(obstacle,_,(X0),(Y0+1))){
 		+avoid_obstacle_n_s;
-	}elif(location(obstacle,_,(MyX),(MyY-1))){
+	}elif(location(obstacle,_,(X0),(Y0-1))){
 		+avoid_obstacle_n_s;
 	}
 	.
 
+// 【avoid_obstacle_e_w】 East-West avoidance strategy. Depending on the size of the random number, an obstacle avoidance direction (east/west) is chosen.
 +avoid_obstacle_e_w : true <-
     .random(R);
-    .print("Random number: ", R);
+    .time(H,M,S,MS);
     if(R < 0.5){
-		agent_location(MyN, MyX, MyY-1);
+		self_location(X0, Y0-1);
         move(n);
-        .print("the agent move n to avoid an obstacle");
+        .print("[",H,":",M,":",S,":",MS,"] ","Agent move n to avoid an obstacle");
     }else{
-		agent_location(MyN, MyX, MyY+1);
+		self_location(X0, Y0+1);
         move(s);
-        .print("the agent move s to avoid an obstacle");
+        .print("[",H,":",M,":",S,":",MS,"] ","Agent move s to avoid an obstacle");
     }.
 
+// 【avoid_obstacle_n_s】 North-South Obstacle Avoidance Strategy. Depending on the size of the random number, an obstacle avoidance direction (north/south) is chosen.
 +avoid_obstacle_n_s : true <-
     .random(R);
-    .print("Random number: ", R);
+    .time(H,M,S,MS);
     if(R < 0.5){
-		agent_location(MyN, MyX+1, MyY);
+		self_location(X0+1, Y0);
         move(e);
-        .print("the agent move e to avoid an obstacle");
+        .print("[",H,":",M,":",S,":",MS,"] ","Agent move e to avoid an obstacle");
     }else{
-		agent_location(MyN, MyX-1, MyY);
+		self_location(X0-1, Y0);
         move(w);
-        .print("the agent move w to avoid an obstacle");
+        .print("[",H,":",M,":",S,":",MS,"] ","Agent move w to avoid an obstacle");
     }.
 
-
-+obstacle(X,Y): agent_location(MyN,MyX,MyY) & count_location(obstacle,N) & (N == 0) <- 
-    +location(obstacle,_,(MyX+X),(MyY+Y));
-    .time(H,M,S,MS);
-    // .print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :",(MyX+X),",",(MyY+Y));
-    +avoid_obstacle(MyX+X, MyY+Y);
-	.print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :",(MyX+X),",",(MyY+Y));
-    .
-
-+obstacle(X,Y): agent_location(MyN,MyX,MyY) & location(obstacle,_,ObsX,ObsY) <- 
-    if(not (ObsX == (MyX+X)) & not (ObsY == (MyY+Y))){
-        +location(obstacle,_,(MyX+X),(MyY+Y));
-        .time(H,M,S,MS);
-        // .print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :");
-        +avoid_obstacle(MyX+X, MyY+Y);
-		.print("[",H,":",M,":",S,":",MS,"] ","the agent sees an obstacle :",(MyX+X),",",(MyY+Y));
-    }
-    .
 
