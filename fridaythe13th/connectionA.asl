@@ -75,11 +75,7 @@ dispenser_list([500]).
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ", Type, " dispenser detected at ",X,",",Y);
 	
-	+location(dispenser,Type,(X0+X),(Y0+Y), (math.abs(X0+X) + math.abs(Y0+Y)));
-	.concat(Dispensers,[(math.abs(X0+X) + math.abs(Y0+Y1))],DispenserNewList);
-	-+dispenser_list(DispenserNewList);
-	
-	/* if(X0+X < 0 & Y0+Y < 0){
+	if(X0+X < 0 & Y0+Y < 0){
 		+location(dispenser,Details,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
 		.concat(DQ,[((X0+X) * -1)+((Y0+Y) * -1)],DQ2);
 		-+dispenser_list(DQ2);
@@ -95,7 +91,7 @@ dispenser_list([500]).
 		+location(dispenser,Details,(X0+X),(Y0+Y), X0+X+Y0+Y);
 		.concat(DQ,[X0+X+Y0+Y],DQ2);
 		-+dispenser_list(DQ2); *
-	}; */
+	};
 	!dispenser_found(Type,(X0+X),(Y0+Y)).
 
 // 【!discover_stock】 In this case, if the agent has not found any blocks yet, then it records the target_dispenser information and updates its own status to find_blocks.
@@ -125,11 +121,7 @@ dispenser_list([500]).
 	.print("[",H,":",M,":",S,":",MS,"] ","Goal detected at ",X,",",Y);
 
 	// Manhattan distance from the origin
-	+location(goal,_,(X0+X),(Y0+Y), math.abs(X0+X) + math.abs(Y0+Y));
-	.concat(Goals,[(math.abs(X0+X) + math.abs(Y0+Y))],GoalsNewList);
-	-+goal_list(GoalsNewList).
-
-	/* if(X0+X < 0 & Y0+Y < 0){
+	if(X0+X < 0 & Y0+Y < 0){
 		+location(goal,_,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
 		.concat(Goals,[((X0+X) * -1)+((Y0+Y) * -1)],GoalsNewList);
 		-+goal_list(GoalsNewList);
@@ -145,7 +137,7 @@ dispenser_list([500]).
 		+location(goal,_,(X0+X),(Y0+Y), X0+X+Y0+Y);
 		.concat(Goals,[X0+X+Y0+Y],GoalsNewList);
 		-+goal_list(GoalsNewList);
-	}. */
+	}.
 
 // 【location(goal,_,X,Y)】 When an agent receives a location(goal,_,X,Y) belief, if it is not currently executing any tasks and has not received any task conflict information, it will get a task from available_task
 //							gets a task and broadcasts a notification of the conflict to all agents in the same team.
