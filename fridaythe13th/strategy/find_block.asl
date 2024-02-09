@@ -18,7 +18,7 @@
 // 【-!move_to_dispenser(X,Y,Type)】 When the execution of the move_to_dispenser plan fails, an alternate plan is executed, i.e., a random walk based on a fast strategy.
 @move_to_backup[atomic] 
 -!move_to_dispenser(X,Y,Type):  self_location(X0,Y0)<-
-    +!move_agent.
+    +!move_agent;
     .print("test ", X-X0, Y-Y0).
 
 

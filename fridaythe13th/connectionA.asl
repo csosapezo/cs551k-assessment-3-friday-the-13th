@@ -90,7 +90,7 @@ dispenser_list([500]).
 	}elif(X0+X > 0 & Y0+Y > 0){
 		+location(dispenser,Details,(X0+X),(Y0+Y), X0+X+Y0+Y);
 		.concat(DQ,[X0+X+Y0+Y],DQ2);
-		-+dispenser_list(DQ2); *
+		-+dispenser_list(DQ2);
 	};
 	!dispenser_found(Type,(X0+X),(Y0+Y)).
 
