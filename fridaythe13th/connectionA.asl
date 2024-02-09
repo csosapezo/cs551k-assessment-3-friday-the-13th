@@ -76,21 +76,21 @@ dispenser_list([500]).
 	.print("[",H,":",M,":",S,":",MS,"] ", Type, " dispenser detected at ",X,",",Y);
 	
 	if(X0+X < 0 & Y0+Y < 0){
-		+location(dispenser,Details,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
-		.concat(DQ,[((X0+X) * -1)+((Y0+Y) * -1)],DQ2);
-		-+dispenser_list(DQ2);
+		+location(dispenser,Type,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
+		.concat(Dispensers,[((X0+X) * -1)+((Y0+Y) * -1)],DispensersNew);
+		-+dispenser_list(DispensersNew);
 	}elif(X0+X > 0 & Y0+Y < 0){
-		+location(dispenser,Details,(X0+X),(Y0+Y), (X0+X)+((Y0+Y) * -1));
-		.concat(DQ,[(X0+X)+((Y0+Y) * -1)],DQ2);
-		-+dispenser_list(DQ2);
+		+location(dispenser,Type,(X0+X),(Y0+Y), (X0+X)+((Y0+Y) * -1));
+		.concat(Dispensers,[(X0+X)+((Y0+Y) * -1)],DispensersNew);
+		-+dispenser_list(DispensersNew);
 	}elif(X0+X < 0 & Y0+Y > 0){
-		+location(dispenser,Details,(X0+X),(Y0+Y), ((X0+X) * -1)+(Y0+Y));
-		.concat(DQ,[((X0+X) * -1)+(Y0+Y)],DQ2);
-		-+dispenser_list(DQ2);
+		+location(dispenser,Type,(X0+X),(Y0+Y), ((X0+X) * -1)+(Y0+Y));
+		.concat(Dispensers,[((X0+X) * -1)+(Y0+Y)],DispensersNew);
+		-+dispenser_list(DispensersNew);
 	}elif(X0+X > 0 & Y0+Y > 0){
-		+location(dispenser,Details,(X0+X),(Y0+Y), X0+X+Y0+Y);
-		.concat(DQ,[X0+X+Y0+Y],DQ2);
-		-+dispenser_list(DQ2);
+		+location(dispenser,Type,(X0+X),(Y0+Y), X0+X+Y0+Y);
+		.concat(Dispensers,[X0+X+Y0+Y],DispensersNew);
+		-+dispenser_list(DispensersNew);
 	};
 	!dispenser_found(Type,(X0+X),(Y0+Y)).
 

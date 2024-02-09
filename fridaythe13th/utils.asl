@@ -96,7 +96,7 @@ count_location(B,N) :- .count(location(B,_,_,_),N).
 random_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.25 & .nth(0,DirList,Dir)) | (RandomNumber <= 0.5 & .nth(1,DirList,Dir)) | (RandomNumber <= 0.75 & .nth(2,DirList,Dir)) | (.nth(3,DirList,Dir)).
 
 // 【get_next_dispenser】 Get the block type and position of the next dispenser by popping the dispenser with the smallest GO value in the dispenser_list.
-next_dispenser(Type,X,Y) :-  dispenser_list(DQ) & .min(DQ,DSeq) & location(dispenser,Type,X,Y).  
+next_dispenser(Type,X,Y) :-  dispenser_list(DQ) & .min(DQ,DSeq) & location(dispenser,Type,X,Y, _).  
 
 // 【get_next_goal】 Get the position of the next goal by popping the goal with the smallest GO value in the goal_list.
 next_goal(X,Y) :-  goal_list(Goals) & .min(Goals,GSeq) & location(goal,_,X,Y,_).  
