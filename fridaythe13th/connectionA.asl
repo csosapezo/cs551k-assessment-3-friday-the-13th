@@ -119,7 +119,7 @@ dispenser_list([500]).
 	-have_block(Dir,Type).
 
 // 【task】 When the agent receives a task belief from the server, it will only accept tasks of a specific block length. Currently only tasks with a block length of 1 are accepted.
-+task(Name, Deadline, Rew, Req) : (.length(Req) == 1) & not available_task(Name,_,_,_,_,_)<-
++task(Name, Deadline, Rew, Req) : (.length(Req) == 1) <-
 	.member(req(X,Y,Type),Req);
 	.print("Task ",Name, " added.");
 	+available_task(Name, Deadline, Rew, X, Y, Type).
