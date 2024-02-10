@@ -31,17 +31,17 @@ dispenser_list([500]).
 	.print("[",H,":",M,":",S,":",MS,"] ","Hello massim world.").
 
 // In the current mode, the agent executes the exploration strategy.
-+!actionID(ID) : mode(explore)<- 
++actionID(ID) : mode(explore)<- 
 	!move_agent.
 
 //  Move to dispenser.
-+!actionID(ID) :  mode(find_blocks) & target_dispenser(Type,X,Y) <-
++actionID(ID) :  mode(find_blocks) & target_dispenser(Type,X,Y) <-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to dispenser at ", X, Y);
 	!move_to_dispenser(X,Y,Type).
 
 // Find the coordinates of a minimally labeled goal from next_goal as the agent's goal.
-+!actionID(ID) : mode(find_goal) & location(goal,_,X,Y) & current_task(_, _, _,_,_,_) <- 
++actionID(ID) : mode(find_goal) & location(goal,_,X,Y) & current_task(_, _, _,_,_,_) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to Goal");
 	!go_to_goal(X,Y).
