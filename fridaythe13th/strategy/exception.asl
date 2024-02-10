@@ -70,8 +70,7 @@
 	.print("[",H,":",M,":",S,":",MS,"] ","Request failed.");
 	-+mode(explore);
 	-target_dispenser(_,_,_);
-	-current_task(_,_,_,_,_,_);
-	.
+	-current_task(_,_,_,_,_,_).
 
 // 【!attach_failed_target】 An agent attempting to mount an incorrect target will go to explore mode and delete that target location, abandoning the current task.
 +!attach_failed_target:true<-

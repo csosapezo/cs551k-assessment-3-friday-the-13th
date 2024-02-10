@@ -15,8 +15,6 @@
 
 self_location(0,0).
 mode(explore).
-goal_list([500]).
-dispenser_list([500]).
 
 
 
