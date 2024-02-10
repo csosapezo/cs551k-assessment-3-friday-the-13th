@@ -34,22 +34,18 @@ dispenser_list([500]).
 +step(S): available_task(Name, Deadline, Rew,X,Y,Type) <-
 	-available_task(Name, Deadline, Rew,X,Y,Type).
 
-// If not, choose to execute an appropriate plan.
-+actionID(ID) : true<- 
-	!define_next_action.
-
-// 【!action_mode】 In the current mode, the agent executes the exploration strategy.
-+!define_next_action : mode(explore)<- 
+// In the current mode, the agent executes the exploration strategy.
++!actionID(ID) : mode(explore)<- 
 	!move_agent.
 
 //  Move to dispenser.
-+!define_next_action :  mode(find_blocks) & target_dispenser(Type,X,Y) <-
++!actionID(ID) :  mode(find_blocks) & target_dispenser(Type,X,Y) <-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to dispenser at ", X, Y);
 	!move_to_dispenser(X,Y,Type).
 
 // Find the coordinates of a minimally labeled goal from next_goal as the agent's goal.
-+!define_next_action : mode(find_goal) & next_goal(XG,YG) & current_task(_, _, _,_,_,_) <- 
++!actionID(ID) : mode(find_goal) & next_goal(XG,YG) & current_task(_, _, _,_,_,_) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to Goal");
 	!go_to_goal(XG,YG).
