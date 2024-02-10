@@ -30,10 +30,6 @@ dispenser_list([500]).
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Hello massim world.").
 
-// Try to query available_task for a task. The task is deleted from available_task after a successful fetch. 
-+step(S): available_task(Name, Deadline, Rew,X,Y,Type) <-
-	-available_task(Name, Deadline, Rew,X,Y,Type).
-
 // In the current mode, the agent executes the exploration strategy.
 +!actionID(ID) : mode(explore)<- 
 	!move_agent.
