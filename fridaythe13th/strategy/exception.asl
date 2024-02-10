@@ -11,7 +11,7 @@
 // 【!move_failed_path】 Used to handle move failure events in find_blocks mode. Used to handle move failure events. Once it fails, the agent will move to its opposite direction
 // 					    based on the direction of failure returned.
 +!move_failed_path(Params) : mode(find_blocks) & self_location(X0,Y0) & .member(Dir,Params) & get_dir(X1,Y1,Dir)
-    & location(dispenser,Type,X,Y,DSeq) & target_dispenser(_,X2,Y2) & not X == X2 & not Y == Y2<-
+    & location(dispenser,Type,X,Y) & target_dispenser(_,X2,Y2) & not X == X2 & not Y == Y2<-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","Move ", Dir, " unsuccessful");
 	-+self_location(X0-X1,Y0-Y1);
@@ -20,12 +20,11 @@
 // 【!move_failed_path】 Used to handle move failure events in find_goal mode. Used to handle move failure events. Once it fails, the agent will move to its opposite direction
 // 					    based on the direction of failure returned.
 +!move_failed_path(Params): mode(find_goal) & self_location(X0,Y0) & .member(Dir,Params) & get_dir(X1,Y1,Dir)
-    & location(goal,_,XG,YG,GSeq)<-
+    & location(goal,_,XG,YG)<-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","Move ", Dir, " unsuccessful");
 	-+self_location(X0-X1,Y0-Y1);
-	-location(goal,_,XG,YG,GSeq);
-	-location(goal,task,XG,YG,GSeq).
+	-location(goal,_,XG,YG).
 
 // 【!move_exploration_failed_forbidden】 Used to handle movement failure events due to out-of-bounds in exploration mode. Once it fails, the agent will move to its opposite direction
 // 										 based on the direction of failure returned. Once a crossing occurs, the crossing point is recorded and a follow-on move point is generated.

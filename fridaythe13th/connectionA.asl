@@ -45,14 +45,14 @@ dispenser_list([500]).
 	!move_to_dispenser(X,Y,Type).
 
 // Find the coordinates of a minimally labeled goal from next_goal as the agent's goal.
-+!actionID(ID) : mode(find_goal) & next_goal(XG,YG) & current_task(_, _, _,_,_,_) <- 
++!actionID(ID) : mode(find_goal) & location(goal,_,X,Y) & current_task(_, _, _,_,_,_) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to Goal");
-	!go_to_goal(XG,YG).
+	!go_to_goal(X,Y).
 
 // 【!assign_dispenser】 This plan is used to give the agent the ability to store the dispenser's information in target_dispenser when it finds a dispenser that has not yet sensed the block type and switches to find_blocks mode.
 @assign_dispenser[atomic] 
-+!assign_dispenser : not block(_,Type) & next_dispenser(Type,X,Y) <-
++!assign_dispenser : not block(_,Type) & location(dispenser,Type,X,Y) <-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent target_dispenser Type=",Type);
 	-+target_dispenser(Type,X,Y);
@@ -67,27 +67,10 @@ dispenser_list([500]).
 // 【thing】When the agent receives the thing sense from the server and the sense is dispenser, it will calculate the absolute position by the relative position of the dispenser and update the dispenser_list.Finally,
 //			it will call the dispenser_found plan.
 @thing1[atomic] 
-+thing(X, Y, dispenser, Type) : self_location(X0,Y0) & not location(dispenser,Type,(X0+X),(Y0+Y),_) & dispenser_list(Dispensers)<-
++thing(X, Y, dispenser, Type) : self_location(X0,Y0)<-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ", Type, " dispenser detected at ",X,",",Y);
-	
-	if(X0+X < 0 & Y0+Y < 0){
-		+location(dispenser,Type,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
-		.concat(Dispensers,[((X0+X) * -1)+((Y0+Y) * -1)],DispensersNew);
-		-+dispenser_list(DispensersNew);
-	}elif(X0+X > 0 & Y0+Y < 0){
-		+location(dispenser,Type,(X0+X),(Y0+Y), (X0+X)+((Y0+Y) * -1));
-		.concat(Dispensers,[(X0+X)+((Y0+Y) * -1)],DispensersNew);
-		-+dispenser_list(DispensersNew);
-	}elif(X0+X < 0 & Y0+Y > 0){
-		+location(dispenser,Type,(X0+X),(Y0+Y), ((X0+X) * -1)+(Y0+Y));
-		.concat(Dispensers,[((X0+X) * -1)+(Y0+Y)],DispensersNew);
-		-+dispenser_list(DispensersNew);
-	}elif(X0+X > 0 & Y0+Y > 0){
-		+location(dispenser,Type,(X0+X),(Y0+Y), X0+X+Y0+Y);
-		.concat(Dispensers,[X0+X+Y0+Y],DispensersNew);
-		-+dispenser_list(DispensersNew);
-	};
+	+location(dispenser,Type,(X0+X),(Y0+Y));
 	!dispenser_found(Type,(X0+X),(Y0+Y)).
 
 // 【!discover_stock】 In this case, if the agent has not found any blocks yet, then it records the target_dispenser information and updates its own status to find_blocks.
@@ -112,28 +95,10 @@ dispenser_list([500]).
 
 // 【goal】Used to update the location information of an undiscovered goal into goal_list.
 @goal1[atomic] 
-+goal(X,Y): self_location(X0,Y0) & not location(goal,_,(X0+X),(Y0+Y),_) & goal_list(Goals)<- 
++goal(X,Y): self_location(X0,Y0) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Goal detected at ",X,",",Y);
-
-	// Manhattan distance from the origin
-	if(X0+X < 0 & Y0+Y < 0){
-		+location(goal,_,(X0+X),(Y0+Y), ((X0+X) * -1)+((Y0+Y) * -1));
-		.concat(Goals,[((X0+X) * -1)+((Y0+Y) * -1)],GoalsNewList);
-		-+goal_list(GoalsNewList);
-	}elif(X0+X > 0 & Y0+Y < 0){
-		+location(goal,_,(X0+X),(Y0+Y), (X0+X)+((Y0+Y) * -1));
-		.concat(Goals,[(X0+X)+((Y0+Y) * -1)],GoalsNewList);
-		-+goal_list(GoalsNewList);
-	}elif(X0+X < 0 & Y0+Y > 0){
-		+location(goal,_,(X0+X),(Y0+Y), ((X0+X) * -1)+(Y0+Y));
-		.concat(Goals,[((X0+X) * -1)+(Y0+Y)],GoalsNewList);
-		-+goal_list(GoalsNewList);
-	}elif(X0+X > 0 & Y0+Y > 0){
-		+location(goal,_,(X0+X),(Y0+Y), X0+X+Y0+Y);
-		.concat(Goals,[X0+X+Y0+Y],GoalsNewList);
-		-+goal_list(GoalsNewList);
-	}.
+	+location(goal,null,(X0+X),(Y0+Y)).
 
 // 【location(goal,_,X,Y)】 When an agent receives a location(goal,_,X,Y) belief, if it is not currently executing any tasks and has not received any task conflict information, it will get a task from available_task
 //							gets a task and broadcasts a notification of the conflict to all agents in the same team.
@@ -150,7 +115,7 @@ dispenser_list([500]).
 
 // 【have_block】 When an agent succeeds in taking possession of a block, it broadcasts a notification of a conflict to other agents in the same team.
 @have_block[atomic] 
-+have_block(Dir,B) : location(goal,_,XG,YG,_) & available_task(Name, Deadline, Rew,X,Y,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
++have_block(Dir,B) : location(goal,_,XG,YG) & available_task(Name, Deadline, Rew,X,Y,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
 	.broadcast(tell,task_already_taken(Name));
 	-available_task(Name, Deadline, Rew,X,Y,Type);
 	+current_task(Name, Deadline, Rew, X, Y, Type);
@@ -166,7 +131,7 @@ dispenser_list([500]).
 // 【available_task】Upon receiving a available_task belief, the agent will query if it is currently executing or if there is a task conflict. If it is not executing and there is no conflict, 
 // 			   it transforms the task into a current_task and broadcasts a conflict notification.
 @available_task[atomic] 
-+available_task(Name, Deadline, Rew,X,Y,Type) : location(goal,_,XG,YG,_) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
++available_task(Name, Deadline, Rew,X,Y,Type) : location(goal,_,XG,YG) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent took task ",Name);
 	.broadcast(tell,task_already_taken(Name));
