@@ -97,7 +97,7 @@ mode(explore).
 // 【location(goal,_,X,Y)】 When an agent receives a location(goal,_,X,Y) belief, if it is not currently executing any tasks and has not received any task conflict information, it will get a task from available_task
 //							gets a task and broadcasts a notification of the conflict to all agents in the same team.
 @goal2[atomic] 
-+location(goal,_,X,Y): available_task(Name, Deadline, Rew,TX,TY,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(N)<- 
++location(goal,_,X,Y): available_task(Name, Deadline, Rew,TX,TY,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<- 
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent sees a goal:",X,",",Y);
 	
