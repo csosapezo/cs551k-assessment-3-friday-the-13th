@@ -62,8 +62,7 @@
 	.print("[",H,":",M,":",S,":",MS,"] ","Block request failed.");
 	-+mode(explore);
 	-target_dispenser(_,_,_);
-	-current_task(_,_,_,_,_,_);
-	.
+	-current_task(_,_,_,_,_,_).
 
 // 【!request_failed_target】 When the agent request a wrong target, it will switch to exploratory mode, while abandoning the current task and deleting the dispenser's information.
 +!request_failed_target: true <-
