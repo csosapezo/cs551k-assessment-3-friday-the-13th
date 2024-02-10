@@ -107,7 +107,7 @@ dispenser_list([500]).
 	-available_task(Name, Deadline, Rew,TX,TY,Type);
 	+current_task(Name, Deadline, Rew,TX,TY,Type);
 	-+mode(find_goal);
-	.print("[",H,":",M,":",S,":",MS,"] ","1--------------------------- Agent start task ",N).
+	.print("[",H,":",M,":",S,":",MS,"] "," Agent start task ",N).
 
 // 【have_block】 When an agent succeeds in taking possession of a block, it broadcasts a notification of a conflict to other agents in the same team.
 @have_block[atomic] 
