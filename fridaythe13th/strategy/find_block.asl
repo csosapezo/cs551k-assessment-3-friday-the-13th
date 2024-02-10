@@ -1,14 +1,14 @@
 /* This module is used to manage the agent's strategy for finding blocks. */
 
-// 【!move_to】 Given the coordinates of a dispenser, navigate through the target by querying suggested_dir for a suggested direction of travel.
+// 【!move_to】 Given the coordinates of a dispenser, navigate through the target by querying next_dir for a suggested direction of travel.
 @move_to_dispenser_check[atomic] 
-+!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & suggested_dir((X-X0),(Y-Y0),null) <-
++!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & next_dir((X-X0),(Y-Y0),null) <-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","Agent already in ",X,",",Y);
 	!check_direction(X,Y,Type).
 
 @move_to_dispenser_move[atomic] 
-+!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & suggested_dir((X-X0),(Y-Y0),Dir)
++!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & next_dir((X-X0),(Y-Y0),Dir)
     & not(Dir = null) & get_dir(X1,Y1,Dir)<-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","Agent (", X0,",",Y0,") move", Dir, "to the dispenser at ",X,",",Y);

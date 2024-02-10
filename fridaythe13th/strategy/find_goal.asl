@@ -1,9 +1,9 @@
 /*  This module is used to discover the goal and navigate to the goal location */
 
-// 【!move_on】 Given the coordinates of a goal, step-by-step navigation to the location of the goal is accomplished with the suggested_dir_on method. When the agent is already on the goal, 
+// 【!move_on】 Given the coordinates of a goal, step-by-step navigation to the location of the goal is accomplished with the next_dir_on method. When the agent is already on the goal, 
 // 			   the rotate_direction plan is executed to attempt to place the block on the goal to submit the task.
 @go_to_goal[atomic] 
-+!go_to_goal(X,Y): self_location(X0,Y0) & suggested_dir_on(X-X0,Y-Y0,Dir) & current_task(Name, Deadline, Rew,TX,TY, Type) & get_dir(X1, Y1, Dir)<-
++!go_to_goal(X,Y): self_location(X0,Y0) & next_dir_on(X-X0,Y-Y0,Dir) & current_task(Name, Deadline, Rew,TX,TY, Type) & get_dir(X1, Y1, Dir)<-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Agent (", X0,",",Y0,") move", Dir, "to goal position at ",X,",",Y);
 
