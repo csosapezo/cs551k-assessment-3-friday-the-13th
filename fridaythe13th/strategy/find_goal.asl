@@ -22,7 +22,7 @@
 	!update_rotated_available_dir(RDir);
 	rotate(RDir);
 	.time(H,M,S,MS); 	
-	.print("[",H,":",M,":",S,":",MS,"] ","Agent rotate from",TargetDir,",to ",CurrentDir," ",RDir).
+	.print("[",H,":",M,":",S,":",MS,"] ","Agent rotate to",TargetDir,",from ",CurrentDir," ",RDir).
 
 //	【!rotate_direction】 In this case, the direction of the block has been aligned with the direction in which the target is located. So try to submit the task and remove the task information and block 
 // 						 information from the belief base. In addition the available directions will be released as well as switching the agent to exploration mode. Finally the assign_dispenser plan is executed to find the dispenser.
