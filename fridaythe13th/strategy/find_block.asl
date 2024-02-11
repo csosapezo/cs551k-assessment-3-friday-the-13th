@@ -1,6 +1,6 @@
 /* This module is used to manage the agent's strategy for finding blocks. */
 
-// 【!move_to】 Given the coordinates of a dispenser, navigate through the target by querying next_dir for a suggested direction of travel.
+// 【!move_to_dispenser】 Given the coordinates of a dispenser, navigate through the target by querying next_dir for a suggested direction of travel.
 @move_to_dispenser_check[atomic] 
 +!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & next_dir((X-X0),(Y-Y0),null) <-
 	.time(H,M,S,MS); 	
@@ -68,6 +68,7 @@
 	+block(Dir,Type);
 	attach(Dir).
 
+// 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
 @rotation_individual[atomic]
 +!rotation(B, Dir, RDir): rotate_dir(NewDir,Dir,RDir) <-
     .print("Rotate from ", Dir, " to ", NewDir);
