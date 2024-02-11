@@ -75,17 +75,11 @@ mode(explore).
 	-+target_dispenser(Type,X,Y);
 	-+mode(find_blocks).
 
-// 【!dispenser_found】 In this case, the agent prints only the message if it already has a block of the same type.
+// 【-!dispenser_found】 In this case, the agent prints only the message.
 @dispenser_found_no_action[atomic] 
-+!dispenser_found(Type,X,Y) : block(_,Type)<-
-	.time(H,M,S,MS);
-	.print("[",H,":",M,":",S,":",MS,"] ","Dispenser found").
-
-// 【-!dispenser_found】 Used to handle situations where dispenser_found execution fails.
-@dispenser_found_error[atomic] 
 -!dispenser_found(Type,X,Y) : true<-
 	.time(H,M,S,MS);
-	.print("[",H,":",M,":",S,":",MS,"] ","Error while detecting dispenser.").
+	.print("[",H,":",M,":",S,":",MS,"] ","Dispenser found").
 
 // 【goal】Used to update the location information of an undiscovered goal into goal_list.
 @goal1[atomic] 
