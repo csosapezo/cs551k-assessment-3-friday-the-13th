@@ -91,7 +91,7 @@ mode(explore).
 // 【location(goal,_,X,Y)】 When an agent receives a location(goal,_,X,Y) belief, if it is not currently executing any tasks and has not received any task conflict information, it will get a task from available_task
 //							gets a task and broadcasts a notification of the conflict to all agents in the same team.
 @goal2[atomic] 
-+location(goal,_,X,Y): available_task(Name, Deadline, Rew,TX,TY,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<- 
++location(goal,_,X,Y): not(mode(find_goal)) & available_task(Name, Deadline, Rew,TX,TY,Type) & block(Dir,Type) & not task_already_taken(Name)<- 
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent sees a goal:",X,",",Y);
 	
@@ -103,7 +103,7 @@ mode(explore).
 
 // 【have_block】 When an agent succeeds in taking possession of a block, it broadcasts a notification of a conflict to other agents in the same team.
 @have_block[atomic] 
-+have_block(Dir,B) : location(goal,_,XG,YG) & available_task(Name, Deadline, Rew,X,Y,Type) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
++have_block(Dir,B) : not(mode(find_goal)) & location(goal,_,XG,YG) & available_task(Name, Deadline, Rew,X,Y,Type) & block(Dir,Type) & not task_already_taken(Name)<-
 	.broadcast(tell,task_already_taken(Name));
 	-available_task(Name, Deadline, Rew,X,Y,Type);
 	+current_task(Name, Deadline, Rew, X, Y, Type);
@@ -119,7 +119,7 @@ mode(explore).
 // 【available_task】Upon receiving a available_task belief, the agent will query if it is currently executing or if there is a task conflict. If it is not executing and there is no conflict, 
 // 			   it transforms the task into a current_task and broadcasts a conflict notification.
 @available_task[atomic] 
-+available_task(Name, Deadline, Rew,X,Y,Type) : location(goal,_,XG,YG) & block(Dir,Type) & not current_task(_,_,_,_,_,_) & not task_already_taken(Name)<-
++available_task(Name, Deadline, Rew,X,Y,Type) : not(mode(find_goal)) & location(goal,_,XG,YG) & block(Dir,Type) & not task_already_taken(Name)<-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent took task ",Name);
 	.broadcast(tell,task_already_taken(Name));

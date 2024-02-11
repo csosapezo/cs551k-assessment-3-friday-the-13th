@@ -53,10 +53,6 @@ lateral([w, e], Dir) :- Dir = n | Dir = s.
 // 【random_lateral_dir】give a random direction from 2 laterals
 random_lateral_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.5 & .nth(0,DirList,Dir)) | (.nth(1,DirList,Dir)).
 
-// 【boundary】Find boundary coordinate
-boundary(X, Y, Dir, X) :- Dir = e | Dir = w.
-boundary(X, Y, Dir, Y) :- Dir = n | Dir = s.
-
 // 【rotate_dir】 Given a start direction and an end direction, this method will provide a rotation method (cw/ccw).
 rotate_dir(n,e,ccw).
 rotate_dir(n,w,cw).
