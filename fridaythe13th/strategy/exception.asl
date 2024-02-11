@@ -28,7 +28,6 @@
 
 +!move_exploration_failed_forbidden(Params): mode(explore) & self_location(X0,Y0)
     & .member(Dir,Params) & get_dir(X1,Y1,Dir) <-
-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ", Dir, " Boundary found");
 	-+self_location(X0-X1,Y0-Y1).
