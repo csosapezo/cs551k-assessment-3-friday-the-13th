@@ -1,12 +1,13 @@
 /* This module is used to manage the agent's strategy for finding blocks. */
 
-// 【!move_to_dispenser】 Given the coordinates of a dispenser, navigate through the target by querying next_dir for a suggested direction of travel.
+// 【!move_to_dispenser】 Given the coordinates of a dispenser, the agent checks the direction of the dispenser and attempts a request.
 @move_to_dispenser_check[atomic] 
 +!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & next_dir((X-X0),(Y-Y0),null) <-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","Agent already in ",X,",",Y);
 	!check_direction(X,Y,Type).
 
+// 【!move_to_dispenser】 Given the position of the dispenser, use next_dir to get the direction to be moved, if that direction is not null then the move will be made.
 @move_to_dispenser_move[atomic] 
 +!move_to_dispenser(X,Y,Type): self_location(X0,Y0) & next_dir((X-X0),(Y-Y0),Dir)
     & not(Dir = null) & get_dir(X1,Y1,Dir)<-
@@ -19,7 +20,7 @@
 @move_to_backup[atomic] 
 -!move_to_dispenser(X,Y,Type):  self_location(X0,Y0)<-
     !move_agent;
-    .print("test ", X-X0, Y-Y0).
+    .print("Move to dispenser failed ", X-X0, Y-Y0).
 
 
 // 【!check_direction】 The agent will issue a block request to the dispenser if the dispenser's location satisfies the condition of being adjacent to the agent.
@@ -68,14 +69,13 @@
 	+block(Dir,Type);
 	attach(Dir).
 
-// 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
+// 【!rotation】 Given the current orientation of the block and the direction in which you want to rotate it, rotate the block to a specific position.
 @rotation_individual[atomic]
 +!rotation(B, Dir, RDir): rotate_dir(NewDir,Dir,RDir) <-
     .print("Rotate from ", Dir, " to ", NewDir);
     -block(Dir, B);
 	+block(NewDir, B).
     
-
 // 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
 @update_rotated_block_dir_all[atomic]
 +!update_rotated_block_dir(RDir) : block(n,B1) & block(e,B2) & block(s,B3) & block(w,B4)<-
@@ -85,7 +85,7 @@
 	!rotation(B3, s, RDir);
 	!rotation(B4, w, RDir).
 
-// 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
+// 【!update_rotated_block_dir】 Update the orientation of the block based on the given direction of rotation.
 @update_rotated_block_dir_3[atomic]
 +!update_rotated_block_dir(RDir) : block(Dir1,B1) & block(Dir2,B2) & block(Dir3,B3) &
     (not(Dir1 = Dir2)) & (not(Dir2 = Dir3)) & (not(Dir1 = Dir3)) <-
@@ -94,20 +94,20 @@
 	!rotation(B2, Dir2, RDir);
 	!rotation(B3, Dir3, RDir).
 
-// 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
+// 【!update_rotated_block_dir】 Update the orientation of the block based on the given direction of rotation.
 @update_rotated_block_dir_2[atomic]
 +!update_rotated_block_dir(RDir) : block(Dir1,B1) & block(Dir2,B2) & (not(Dir1 = Dir2)) <-
     .print("Rotate ", Dir1, Dir2);
     !rotation(B1, Dir1, RDir);
 	!rotation(B2, Dir2, RDir).
 
-// 【!update_rotated_block_dir】 Updates the orientation of the block based on the given direction of rotation.
+// 【!update_rotated_block_dir】 Update the orientation of the block based on the given direction of rotation.
 @update_rotated_block_dir_single[atomic]
 +!update_rotated_block_dir(RDir) : block(Dir,B) <-
     .print("Rotate ", Dir);
     !rotation(B, Dir, RDir).
 	
-// 【!update_rotated_available_dir】 Updates the new available direction based on the given direction of rotation and the current available direction.
+// 【!update_rotated_available_dir】 Update the new available direction based on the given direction of rotation and the current available direction.
 @update_rotated_available_dir_3[atomic]
 +!update_rotated_available_dir(RDir): available_dir(Dir1) & available_dir(Dir2) & available_dir(Dir3)
     & (not(Dir1 = Dir2)) & (not(Dir2 = Dir3)) & (not(Dir1 = Dir3))
@@ -115,14 +115,14 @@
 	-available_dir(OldDir);
 	+available_dir(Dir).
 
-// 【!update_rotated_available_dir】 Updates the new available direction based on the given direction of rotation and the current available direction.
+// 【!update_rotated_available_dir】 Update the new available direction based on the given direction of rotation and the current available direction.
 @update_rotated_available_dir_2_adjacent[atomic]
 +!update_rotated_available_dir(RDir): available_dir(Dir1) & available_dir(Dir2) & not(Dir1 = Dir2)
     & rotate_dir(Dir2, Dir1, RDir) & rotate_dir(NewDir, Dir2, RDir) <-
 	-available_dir(Dir1);
 	+available_dir(NewDir).
 
-// 【!update_rotated_available_dir】 Updates the new available direction based on the given direction of rotation and the current available direction.
+// 【!update_rotated_available_dir】 Update the new available direction based on the given direction of rotation and the current available direction.
 @update_rotated_available_dir_2_opposite[atomic]
 +!update_rotated_available_dir(RDir): available_dir(Dir1) & available_dir(Dir2) & not(Dir1 = Dir2)
     & rotate_dir(NewDir1, Dir1, RDir) & rotate_dir(NewDir2, Dir2, RDir) <-
@@ -131,7 +131,7 @@
 	+available_dir(NewDir1);
 	+available_dir(NewDir2).
 
-// 【update_rotated_available_dir】 Updates the new available direction based on the given direction of rotation and the current available direction.
+// 【update_rotated_available_dir】 Update the new available direction based on the given direction of rotation and the current available direction.
 @update_rotated_available_dir11[atomic]
 +!update_rotated_available_dir(RDir): available_dir(Dir) & rotate_dir(NewDir, Dir, RDir) <-
     -available_dir(Dir);

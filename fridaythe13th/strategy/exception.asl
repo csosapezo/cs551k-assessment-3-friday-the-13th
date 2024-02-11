@@ -26,6 +26,8 @@
 	-+self_location(X0-X1,Y0-Y1);
 	-location(goal,_,XG,YG).
 
+// 【!move_exploration_failed_forbidden】 Used to handle movement failure events due to out-of-bounds in exploration mode. Once it fails, the agent will move to its opposite direction
+// 										 based on the direction of failure returned. Once a crossing occurs, the crossing point is recorded and a follow-on move point is generated.
 +!move_exploration_failed_forbidden(Params): mode(explore) & self_location(X0,Y0)
     & .member(Dir,Params) & get_dir(X1,Y1,Dir) <-
 	.time(H,M,S,MS); 	

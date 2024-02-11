@@ -50,6 +50,7 @@ next_dir_on(0,0,null).
 // 【lateral】Give the lateral directions of each direction
 lateral([n, s], Dir) :- Dir = w | Dir = e.
 lateral([w, e], Dir) :- Dir = n | Dir = s.
+
 // 【random_lateral_dir】give a random direction from 2 laterals
 random_lateral_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.5 & .nth(0,DirList,Dir)) | (.nth(1,DirList,Dir)).
 
@@ -67,6 +68,7 @@ rotate_dir(e,e,null).
 rotate_dir(s,s,null).
 rotate_dir(w,w,null).
 
+// 【needed_rotate_dir】 Predefined encapsulation of rotate_dir.
 needed_rotate_dir(DirA, DirB, RDir) :- rotate_dir(DirA, DirB, RDir).
 needed_rotate_dir(n,s,ccw).
 needed_rotate_dir(e,w,ccw).

@@ -16,8 +16,6 @@
 self_location(0,0).
 mode(explore).
 
-
-
 // Initial goals 
 
 !start.                
@@ -28,20 +26,21 @@ mode(explore).
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Hello massim world.").
 
+// 【step】 Try to query available_task for a task. The task is deleted from available_task after a successful fetch. 
 +step(S): available_task(Name, Deadline, Rew,X,Y,Type) <-
 	-available_task(Name, Deadline, Rew,X,Y,Type).
 
-// In the current mode, the agent executes the exploration strategy.
+// 【actionID】 If not, choose to execute an appropriate plan.
 +actionID(ID) : mode(explore)<- 
 	!move_agent.
 
-//  Move to dispenser.
+// 【actionID】 Agent current mode switches to find_blocks mode and move to a dispenser.
 +actionID(ID) :  mode(find_blocks) & target_dispenser(Type,X,Y) <-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to dispenser at ", X, Y);
 	!move_to_dispenser(X,Y,Type).
 
-// Find the coordinates of a minimally labeled goal from next_goal as the agent's goal.
+// 【actionID】 The agent is currently in find_goal mode and is trying to get to a goal.
 +actionID(ID) : mode(find_goal) & location(goal,_,X,Y) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to Goal");
@@ -84,7 +83,7 @@ mode(explore).
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Dispenser found").
 
-// 【goal】Used to update the location information of an undiscovered goal into goal_list.
+// 【goal】 Used to update the location information of an undiscovered goal into goal_list.
 @goal1[atomic] 
 +goal(X,Y): self_location(X0,Y0) <- 
 	.time(H,M,S,MS);
