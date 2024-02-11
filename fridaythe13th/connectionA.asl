@@ -53,14 +53,14 @@ mode(explore).
 	-+mode(find_blocks).
 
 // 【!assign_dispenser】This plan is a backup plan in case gent fails to execute the assign_dispenser plan, and only prints the information.
-@stock1[atomic] 
+@dispenser_error[atomic] 
 +!assign_dispenser : true <-
 	.time(H,M,S,MS); 	
 	.print("[",H,":",M,":",S,":",MS,"] ","The agent gives up a target_dispenser Type=",Type).
 
 // 【thing】When the agent receives the thing sense from the server and the sense is dispenser, it will calculate the absolute position by the relative position of the dispenser and update the dispenser_list.Finally,
 //			it will call the dispenser_found plan.
-@thing1[atomic] 
+@percept_dispenser[atomic] 
 +thing(X, Y, dispenser, Type) : self_location(X0,Y0)<-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ", Type, " dispenser detected at ",X,",",Y);
