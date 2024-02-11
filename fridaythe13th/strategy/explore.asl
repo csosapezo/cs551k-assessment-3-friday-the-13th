@@ -9,7 +9,7 @@
 @move_agent_goal[atomic]
 +!move_agent: not(mode(find_goal)) & location(goal,_,XG,YG) & self_location(X0,Y0) & available_task(Name, Deadline, Rew,X,Y,Type) & block(Dir,Type) & not task_already_taken(Name)<-
 	.time(H,M,S,MS);
-	.broadcast(tell,task_already_taken(N));
+	.broadcast(tell,task_already_taken(Name));
 	-available_task(Name, Deadline, Rew,X,Y,Type);
 	+current_task(Name, Deadline, Rew,X,Y,Type);
 	-+mode(find_goal);
