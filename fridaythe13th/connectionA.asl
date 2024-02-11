@@ -67,7 +67,7 @@ mode(explore).
 	+location(dispenser,Type,(X0+X),(Y0+Y));
 	!dispenser_found(Type,(X0+X),(Y0+Y)).
 
-// 【!discover_stock】 In this case, if the agent has not found any blocks yet, then it records the target_dispenser information and updates its own status to find_blocks.
+// 【!dispenser_found】 In this case, if the agent has not found any blocks yet, then it records the target_dispenser information and updates its own status to find_blocks.
 @dispenser_found[atomic] 
 +!dispenser_found(Type,X,Y) : not block(_,_)<-
 	.time(H,M,S,MS);
@@ -75,14 +75,14 @@ mode(explore).
 	-+target_dispenser(Type,X,Y);
 	-+mode(find_blocks).
 
-// 【!discover_stock】 In this case, the agent prints only the message if it already has a block of the same type.
-@discover_stock2[atomic] 
+// 【!dispenser_found】 In this case, the agent prints only the message if it already has a block of the same type.
+@dispenser_found_no_action[atomic] 
 +!dispenser_found(Type,X,Y) : block(_,Type)<-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Dispenser found").
 
-// 【-!discover_stock】 Used to handle situations where dispenser_found execution fails.
-@discover_stock3[atomic] 
+// 【-!dispenser_found】 Used to handle situations where dispenser_found execution fails.
+@dispenser_found_error[atomic] 
 -!dispenser_found(Type,X,Y) : true<-
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Error while detecting dispenser.").
