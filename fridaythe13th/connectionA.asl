@@ -39,7 +39,7 @@ mode(explore).
 	!move_to_dispenser(X,Y,Type).
 
 // Find the coordinates of a minimally labeled goal from next_goal as the agent's goal.
-+actionID(ID) : mode(find_goal) & location(goal,_,X,Y) & current_task(_, _, _,_,_,_) <- 
++actionID(ID) : mode(find_goal) & location(goal,_,X,Y) <- 
 	.time(H,M,S,MS);
 	.print("[",H,":",M,":",S,":",MS,"] ","Move to Goal");
 	!go_to_goal(X,Y).
