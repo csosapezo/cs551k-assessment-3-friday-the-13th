@@ -47,13 +47,6 @@ next_dir_on(0,Y,n) :- Y < 0.
 next_dir_on(0,Y,s) :- Y > 0.
 next_dir_on(0,0,null).
 
-// 【lateral】Give the lateral directions of each direction
-lateral([n, s], Dir) :- Dir = w | Dir = e.
-lateral([w, e], Dir) :- Dir = n | Dir = s.
-
-// 【random_lateral_dir】give a random direction from 2 laterals
-random_lateral_dir(DirList,RandomNumber,Dir) :- (RandomNumber <= 0.5 & .nth(0,DirList,Dir)) | (.nth(1,DirList,Dir)).
-
 // 【rotate_dir】 Given a start direction and an end direction, this method will provide a rotation method (cw/ccw).
 rotate_dir(n,e,ccw).
 rotate_dir(n,w,cw).
